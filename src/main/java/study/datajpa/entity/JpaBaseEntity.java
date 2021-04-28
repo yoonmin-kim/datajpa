@@ -1,0 +1,32 @@
+package study.datajpa.entity;
+
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import java.time.LocalDateTime;
+
+@MappedSuperclass
+@Getter @Setter
+public class JpaBaseEntity {
+
+    @Column(updatable = false) //실수로 수정하는것을 방지함
+    private LocalDateTime createdDate;
+    private LocalDateTime updatedDate;
+
+    @PrePersist
+    public void prePersist() {
+        LocalDateTime now = LocalDateTime.now();
+        createdDate = now;
+        updatedDate = now;
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        updatedDate = LocalDateTime.now();
+    }
+
+}
